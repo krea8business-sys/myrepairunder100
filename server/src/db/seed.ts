@@ -99,13 +99,25 @@ const AREAS: { city: string; state: string; zones: { name: string; pins: [string
 ];
 
 async function ensureAdmin() {
-  // First admin: from SEED_ADMIN_EMAIL / SEED_ADMIN_PASSWORD (production) or the local-development default
-  const email = process.env.SEED_ADMIN_EMAIL ?? (isProd ? null : 'admin@myrepairunder100.local');
-  const password = process.env.SEED_ADMIN_PASSWORD ?? (isProd ? null : 'ChangeMe-Dev-2026');
-  if (email && password) {
-    await db.insert(adminUsers).values({ email, name: isProd ? 'Owner' : 'Owner (dev)', role: 'SUPER_ADMIN', passwordHash: await bcrypt.hash(password, 12), mustChangePassword: true }).onConflictDoNothing();
-    console.log(isProd ? `Created admin ${email}` : `Dev admin: ${email} / ${password}  (must change on first login; never use in production)`);
-  } else console.log('Production: set SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD to create the first admin.');
+  // First admin: from SEED_ADMIN_EMAIL / SEED_ADMIN_PASSWORD (production) or the local-development default.
+  // Email is stored lower-case and trimmed (login is case-insensitive). Set SEED_ADMIN_RESET=true to reset this
+  // admin's password to SEED_ADMIN_PASSWORD (and unlock it) on the next start — then remove the variable.
+  const email = (process.env.SEED_ADMIN_EMAIL ?? (isProd ? '' : 'admin@myrepairunder100.local')).trim().toLowerCase();
+  const password = (process.env.SEED_ADMIN_PASSWORD ?? (isProd ? '' : 'ChangeMe-Dev-2026')).trim();
+  if (!email || !password) { console.log('Set SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD to create the first admin.'); return; }
+  const hash = await bcrypt.hash(password, 12);
+  const [existing] = await db.select().from(adminUsers).where(sql`lower(trim(${adminUsers.email})) = ${email}`);
+  if (!existing) {
+    await db.insert(adminUsers).values({ email, name: isProd ? 'Owner' : 'Owner (dev)', role: 'SUPER_ADMIN', passwordHash: hash, mustChangePassword: true });
+    console.log(`Created admin ${email}`);
+  } else {
+    if (existing.email !== email) await db.update(adminUsers).set({ email }).where(eq(adminUsers.id, existing.id));
+    if (process.env.SEED_ADMIN_RESET === 'true') {
+      await db.update(adminUsers).set({ passwordHash: hash, failedLogins: 0, lockedUntil: null, active: true, role: 'SUPER_ADMIN', mustChangePassword: true }).where(eq(adminUsers.id, existing.id));
+      console.log(`Admin ${email}: password reset from SEED_ADMIN_PASSWORD and account unlocked. Remove SEED_ADMIN_RESET now.`);
+    } else console.log(`Admin ${email} already exists.`);
+  }
+  if (!isProd) console.log(`Dev admin: ${email} / ${password}  (local development only)`);
 }
 
 async function main() {

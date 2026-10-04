@@ -52,6 +52,9 @@ services:
         sync: false
       - key: SEED_ADMIN_PASSWORD
         sync: false
+      # Set to "true" to reset the admin password to SEED_ADMIN_PASSWORD on next start (then delete it)
+      - key: SEED_ADMIN_RESET
+        value: "false"
 
 databases:
   - name: myrepairunder100-db

@@ -176,8 +176,8 @@ authRouter.post('/push-token', requireUser(), async (req, res) => {
 
 // ───────────── Admin login (email + password, lockout) ─────────────
 authRouter.post('/admin/login', async (req, res) => {
-  const { email, password } = parse(z.object({ email: z.string().email().toLowerCase(), password: z.string().min(1).max(200) }), req.body);
-  const [a] = await db.select().from(adminUsers).where(eq(adminUsers.email, email));
+  const { email, password } = parse(z.object({ email: z.string().trim().toLowerCase().pipe(z.email()), password: z.string().min(1).max(200) }), req.body);
+  const [a] = await db.select().from(adminUsers).where(sql`lower(trim(${adminUsers.email})) = ${email}`);
   const fail = () => unauthorized('Invalid email or password.');
   if (!a || !a.active) { await bcrypt.compare(password, '$2a$12$abcdefghijklmnopqrstuuOIr4bYdS7mZ4Y0m8vAa0Fh0tXw1xGq2'); throw fail(); }
   if (a.lockedUntil && a.lockedUntil > new Date()) throw tooMany('Account locked after failed attempts. Try again later.');
