@@ -1,0 +1,4 @@
+uploads/
+dist/
+.env
+node_modules/

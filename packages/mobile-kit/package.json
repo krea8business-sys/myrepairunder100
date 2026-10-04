@@ -1,0 +1,7 @@
+{
+  "name": "@mru/mobile-kit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared design system, API client and auth for the customer and technician Expo apps. Consumed via tsconfig path alias '@kit/*' + Metro watchFolders (no build step).",
+  "main": "src/index.ts"
+}

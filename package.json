@@ -1,0 +1,24 @@
+{
+  "name": "myrepairunder100",
+  "private": true,
+  "version": "0.1.0",
+  "description": "MyRepairUnder100 \u2014 appliance repair booking platform (customer app, technician app, admin, API)",
+  "workspaces": [
+    "server",
+    "packages/*",
+    "apps/admin"
+  ],
+  "scripts": {
+    "dev:server": "npm run dev -w server",
+    "dev:admin": "npm run dev -w apps/admin",
+    "db:migrate": "npm run db:migrate -w server",
+    "db:seed": "npm run db:seed -w server",
+    "test": "npm test -w server",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "build": "npm run build -w apps/admin && npm run build -w server",
+    "start": "cd server && npm start"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

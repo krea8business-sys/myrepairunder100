@@ -1,0 +1,83 @@
+{
+  "expo": {
+    "name": "MRU Partner",
+    "slug": "myrepairunder100-technician",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "mrupartner",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "bundleIdentifier": "com.myrepairunder100.technician",
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "We use your location only while you travel to an active job, so the customer can see you're on the way.",
+        "NSCameraUsageDescription": "Take before/after photos of the appliance for the job record.",
+        "NSPhotoLibraryUsageDescription": "Attach before/after photos of the appliance."
+      }
+    },
+    "android": {
+      "package": "com.myrepairunder100.technician",
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "POST_NOTIFICATIONS",
+        "CAMERA"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": ""
+        }
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "output": "single",
+      "favicon": "./assets/images/favicon.png",
+      "name": "MyRepairUnder100"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#FFFFFF",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 140
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "We use your location only while you travel to an active job, so the customer can see you're on the way."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#1747D6"
+        }
+      ],
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Take before/after photos of the appliance for the job record."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": false,
+      "reactCompiler": true
+    },
+    "extra": {
+      "apiUrl": "http://localhost:4000"
+    }
+  }
+}

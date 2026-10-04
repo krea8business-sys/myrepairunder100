@@ -1,0 +1,38 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@kit": [
+        "../../packages/mobile-kit/src/index.ts"
+      ],
+      "@kit/*": [
+        "../../packages/mobile-kit/src/*"
+      ],
+      "react": [
+        "./node_modules/@types/react"
+      ],
+      "react-native": [
+        "./node_modules/react-native"
+      ],
+      "expo-*": [
+        "./node_modules/expo-*"
+      ],
+      "@expo/vector-icons": [
+        "./node_modules/@expo/vector-icons"
+      ],
+      "react-native-safe-area-context": [
+        "./node_modules/react-native-safe-area-context"
+      ],
+      "socket.io-client": [
+        "./node_modules/socket.io-client"
+      ],
+      "react/*": [
+        "./node_modules/@types/react/*"
+      ]
+    }
+  },
+  "//": "Typecheck-only config: the shared kit in /packages/mobile-kit has no node_modules of its own, so its third-party imports are pointed at this app's. Metro does the same at runtime via metro.config.js."
+}

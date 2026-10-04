@@ -1,0 +1,35 @@
+export type Category = { id: string; slug: string; name: string; shortDescription: string | null; icon: string; imageUrl: string | null; startingPrice: number | null; serviceCount: number };
+export type Service = {
+  id: string; slug: string; name: string; categoryId: string; subcategoryId: string | null; shortDescription: string | null; description: string | null;
+  includes: string[]; excludes: string[]; terms: string | null; sparePartsPolicy: string | null; durationMins: number; warrantyDays: number;
+  price: number; mrp: number | null; isStartingPrice: boolean; maxQuantity: number; popular: boolean; imageUrl: string | null;
+};
+export type Offer = { id: string; title: string; subtitle: string | null; kind: string; couponCode: string | null; ctaLabel: string | null; ctaTarget: string | null; theme: string };
+export type CouponInfo = { code: string; title: string; description: string | null; discountType: 'PERCENT' | 'FLAT'; value: number; minOrder: number; maxDiscount: number | null; expiresAt: string | null; newUsersOnly: boolean };
+export type Home = { company: { name: string; tagline: string; supportPhone: string | null; whatsapp: string | null; publicStats: { label: string; value: string }[] }; categories: Category[]; popular: Service[]; offers: Offer[]; referral: { referrerReward: number; refereeReward: number } | null; whyChooseUs: string[]; features: Features; testMode: boolean };
+export type Features = { wallet: boolean; coupons: boolean; chat: boolean; liveTracking: boolean; reviews: boolean; warrantyClaims: boolean; search: boolean; offersOnHome: boolean; popularOnHome: boolean; whyChooseUsOnHome: boolean; technicianSelfSignup: boolean; searchPlaceholder: string; referBannerTitle: string; whyChooseUs: string[]; homeNotice: string; referEarn?: boolean; cashPayment?: boolean; asap?: boolean };
+export type AppConfig = { testMode: boolean; features: Features; company: { name: string; supportPhone: string | null; whatsapp: string | null; email: string | null }; payments: { payNowEnabled: boolean; payAfterServiceEnabled: boolean; cashEnabled: boolean; methods: string[] }; tax: { enabled: boolean; label: string; mode: string }; cancellation: { freeUntilMinutesBefore: number; feePaise: number } };
+export type CategoryDetail = { category: Category & { seoTitle?: string }; subcategories: { id: string; slug: string; name: string }[]; services: Service[] };
+export type Quote = { itemsTotal: number; couponDiscount: number; coupon: { code: string } | null; couponError: string | null; taxTotal: number; taxInclusive: boolean; totalBeforeWallet: number; walletUsed: number; walletAvailable: number; walletNote: string | null; grandTotal: number; minOrderValue: number };
+export type CartItem = { id: string; serviceId: string; quantity: number; name: string; unitPrice: number; mrp: number | null; isStartingPrice: boolean; maxQuantity: number; categoryId: string; durationMins: number };
+export type Cart = { items: CartItem[]; removedUnavailable: string[]; quote: Quote };
+export type Address = { id: string; label: 'HOME' | 'WORK' | 'OTHER'; contactName: string; contactPhone: string; houseNo: string; street: string | null; landmark: string | null; locality: string | null; city: string; state: string; pincode: string; lat: number | null; lng: number | null; isDefault: boolean; serviceability: { serviceable: boolean; message: string } };
+export type Slots = { days: { date: string; label: string; slots: { id: string; label: string; available: boolean; reason?: string }[] }[]; asap: { available: boolean; label: string } };
+export type BookingSummary = { id: string; code: string; status: string; paymentStatus: string; scheduledDate: string; slotLabel: string; isAsap: boolean; services: string; technicianName: string | null; grandTotal: number; amountDue: number; createdAt: string; warrantyUntil: string | null };
+export type Addon = { id: string; kind: 'SERVICE' | 'PART'; name: string; note: string | null; unitPrice: number; quantity: number; lineTotal: number; status: 'PENDING' | 'APPROVED' | 'REJECTED'; warrantyDays: number };
+export type Booking = {
+  id: string; code: string; status: string; paymentStatus: string; paymentMode: string; scheduledDate: string; slotLabel: string; isAsap: boolean; problemDescription: string | null;
+  address: { contactName?: string; houseNo?: string; street?: string | null; landmark?: string | null; locality?: string | null; city: string; pincode: string; lat?: number | null; lng?: number | null };
+  items: { id: string; name: string; unitPrice: number; quantity: number; lineTotal: number; warrantyDays: number }[]; addons: Addon[];
+  bill: { itemsTotal: number; couponDiscount: number; addonsTotal: number; taxTotal: number; taxInclusive: boolean; walletUsed: number; grandTotal: number; amountPaid: number; amountDue: number; cancellationFee: number };
+  technician: { id: string; code: string; name: string | null; photoUrl: string | null; rating: number | null; ratingCount: number; completedJobs: number; phone: string | null; experienceYears: number | null } | null;
+  startCode?: string; timeline: { status: string; at: string; note: string | null }[]; photos: { id: string; kind: string; url: string }[];
+  payments: { id: string; purpose: string; method: string | null; amount: number; status: string; createdAt: string }[]; refunds: { id: string; amount: number; destination: string; status: string }[];
+  review: { technicianRating: number; serviceRating: number; comment: string | null } | null;
+  warranty: { until: string | null; active: boolean; claims: { id: string; status: string; description: string; adminNote: string | null; createdAt: string }[] };
+  cancelReason: string | null; cancelledBy: string | null; canCancel: boolean; canReschedule: boolean; canTrack: boolean; createdAt: string; completedAt: string | null; paymentExpiresAt: string | null;
+};
+export type Wallet = { balance: number; summary: { earned: number; used: number; refunds: number; referralRewards: number; promotional: number }; expiringSoon: { amount: number; expiresAt: string } | null; rules: { maxUsePerBooking: number; maxUsePercentBps: number; minBookingValue: number } };
+export type WalletTxn = { id: string; type: 'CREDIT' | 'DEBIT'; source: string; amount: number; balanceAfter: number; bookingId: string | null; description: string; status: string; expiresAt: string | null; createdAt: string };
+export type Referral = { enabled: boolean; code: string; link: string; shareText: string; rules: { referrerReward: number; refereeReward: number; minBookingValue: number; monthlyLimit: number }; stats: { invited: number; pending: number; rewarded: number; earned: number }; appliedCode: { code: string; status: string } | null };
+export type Notification = { id: string; type: string; title: string; body: string; data: Record<string, string>; readAt: string | null; createdAt: string };

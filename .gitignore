@@ -1,0 +1,11 @@
+node_modules/
+.next/
+.expo/
+dist/
+uploads/
+.env
+*.tsbuildinfo
+next-env.d.ts
+apps/admin/out/
+apps/*/android/
+apps/*/ios/
